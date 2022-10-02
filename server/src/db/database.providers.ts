@@ -10,7 +10,7 @@ export const databaseProviders = [
         port: 3306,
         username: env.DATABASE_ID,
         password: env.DATABASE_PASSWORD,
-        database: 'test',
+        database: 'yonggi',
         entities: [__dirname + '/../**/*.entity{.ts,.js}'],
         synchronize: true,
       });
