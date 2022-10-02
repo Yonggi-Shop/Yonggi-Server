@@ -12,7 +12,7 @@ export const databaseProviders = [
         password: env.DATABASE_PASSWORD,
         database: 'yonggi',
         entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-        synchronize: true,
+        synchronize: false,
       });
 
       return dataSource.initialize();

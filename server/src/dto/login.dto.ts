@@ -8,8 +8,4 @@ export class LoginDto {
   @Length(8, 50)
   @IsString()
   password: string;
-
-  @Length(2, 15)
-  @IsString()
-  name: string;
 }
