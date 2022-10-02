@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { logger } from './common/middlewares/logger.middleware';
 import { User } from './user/user.entity';
+import { env } from 'process';
 
 @Module({
   imports: [
@@ -18,11 +19,11 @@ import { User } from './user/user.entity';
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: '152.70.235.22',
+      host: env.DATABASE_URL,
       port: 3306,
-      username: 'root',
-      password: 'root',
-      database: 'yonggi',
+      username: env.DATABASE_ID,
+      password: env.DATABASE_PASSWORD,
+      database: env.DATABASE_NAME,
       entities: [User],
       synchronize: false,
       autoLoadEntities: true,
