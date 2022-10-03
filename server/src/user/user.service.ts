@@ -11,8 +11,11 @@ export class UserService {
     private userRepository: Repository<User>,
   ) {}
 
-  async getUser(user: User) {
-    const { userId } = user;
+  async allUser() {
+    return await this.userRepository.find();
+  }
+
+  async getUser(userId: string) {
     const result = await this.userRepository
       .createQueryBuilder('user')
       .select(['user.userId', 'user.name'])
