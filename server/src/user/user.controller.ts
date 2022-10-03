@@ -21,6 +21,7 @@ export class UserController {
   @Get()
   @UseGuards(JwtAuthGuard)
   getUser(@Req() req: Request, user: User) {
+    console.log('api호출');
     return this.userService.getUser(user);
   }
 }
