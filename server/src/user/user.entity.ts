@@ -14,6 +14,9 @@ export class User {
   @Column('varchar')
   name: string;
 
+  @Column('varchar')
+  email: string;
+
   @Column({
     default: new Intl.DateTimeFormat('ko', {
       dateStyle: 'long',

@@ -1,7 +1,6 @@
 import { IsString, Length, Max } from 'class-validator';
 
 export class LoginDto {
-  @Max(20)
   @IsString()
   userId: string;
 
