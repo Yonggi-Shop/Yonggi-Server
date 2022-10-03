@@ -4,13 +4,14 @@ import {
   NestModule,
   RequestMethod,
 } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { logger } from './common/middlewares/logger.middleware';
-import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/user.entity';
 import { env } from 'process';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
