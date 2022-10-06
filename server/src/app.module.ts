@@ -25,7 +25,7 @@ import { env } from 'process';
       password: env.DATABASE_PASSWORD,
       database: env.DATABASE_NAME,
       entities: [User],
-      synchronize: false,
+      synchronize: true,
       autoLoadEntities: true,
     }),
     AuthModule,
