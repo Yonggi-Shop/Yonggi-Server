@@ -56,12 +56,13 @@ export class AuthService {
       throw new UnauthorizedException('이미 존재하는 아이디입니다.');
     } else {
       const hashedPassword = await bcrypt.hash(user.password, 12);
-      await this.userRepository.save({
+      const registUser = await this.userRepository.save({
         userId,
         password: hashedPassword,
         name,
         email,
       });
+      return registUser;
     }
   }
 }
