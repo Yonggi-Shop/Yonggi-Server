@@ -11,6 +11,7 @@ async function bootstrap() {
     origin: '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     preflightContinue: false,
+    credentials: false,
   });
   const config = new DocumentBuilder()
     .setTitle('YonggiServer')
