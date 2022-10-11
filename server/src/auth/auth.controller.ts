@@ -40,8 +40,8 @@ export class AuthController {
   ) {
     const data = await this.authService.login(loginDto);
     response.setHeader('Set-Cookie', await data.token);
-    const result = { name: data.user.name };
-    return result;
+    console.log(data);
+    return data.user.name;
   }
 
   @Post('regist')

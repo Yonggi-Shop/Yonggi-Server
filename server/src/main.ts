@@ -4,7 +4,7 @@ import { AppModule } from './app.module';
 import { logger } from './common/middlewares/logger.middleware';
 import { HttpExceptionFilter } from './common/exceptions/http-exception.filter';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import * as cookieParser from 'cookie-parser'
+import * as cookieParser from 'cookie-parser';
 
 declare const module: any;
 
@@ -24,7 +24,13 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
   app.use(cookieParser());
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+    }),
+  );
   app.useGlobalFilters(new HttpExceptionFilter());
   app.use(logger);
   await app.listen(3000);
