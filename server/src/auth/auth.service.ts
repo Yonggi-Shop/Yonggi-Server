@@ -34,10 +34,8 @@ export class AuthService {
     }
 
     const payload = { userId, sub: getUser.userId };
-    console.log(payload);
-    return {
-      token: this.jwtService.sign(payload),
-    };
+    const token = this.jwtService.sign(payload)
+    return `Authentication=${token}; HttpOnly; Path=/; Max-Age=36000`;
   }
 
   async findUserByWithoutPassword(userId: string): Promise<User | null> {

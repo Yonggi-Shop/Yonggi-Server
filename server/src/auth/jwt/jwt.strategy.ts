@@ -6,12 +6,17 @@ import { Repository } from 'typeorm';
 import { User } from 'src/user/user.entity';
 import { AuthService } from '../auth.service';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Request } from 'express';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private readonly authService: AuthService) {
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        (req:Request) =>{
+            return req?.cookies?.Authentication;
+        },
+      ]),
       secretOrKey: env.JWT_SECRET,
       ignoreExpiration: false,
     });

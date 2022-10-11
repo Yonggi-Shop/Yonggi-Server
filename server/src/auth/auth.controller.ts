@@ -34,8 +34,10 @@ export class AuthController {
 
   @Post('login')
   @ApiOperation({ summary: '유저 로그인', description: '로그인' })
-  login(@Body() loginDto: LoginDto) {
-    return this.authService.login(loginDto);
+  async login(@Body() loginDto: LoginDto, @Res({passthrough: true}) response:Response) {
+    const cookie = await this.authService.login(loginDto);
+    response.setHeader('Set-Cookie',await cookie);
+    return response.send("Suceess");
   }
 
   @Post('regist')
