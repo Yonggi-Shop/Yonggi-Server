@@ -5,7 +5,7 @@ export class LoginResponseDto {
   name: string;
   token: string;
 
-  @Exclude()
+  @Exclude({ toPlainOnly: true })
   password: string;
 
   constructor(partial: Partial<LoginResponseDto>) {
