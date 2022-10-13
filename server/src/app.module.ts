@@ -11,8 +11,16 @@ import { UserModule } from './user/user.module';
 import { logger } from './common/middlewares/logger.middleware';
 import { User } from './user/user.entity';
 import { env } from 'process';
+import { HttpExceptionFilter } from './common/exceptions/http-exception.filter';
+import { APP_FILTER } from '@nestjs/core';
 
 @Module({
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
+    },
+  ],
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,

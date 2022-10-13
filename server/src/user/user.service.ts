@@ -15,14 +15,19 @@ export class UserService {
     return await this.userRepository.find();
   }
 
-  async getUser(userId: string) {
-    const result = await this.userRepository
+  async getUser(userId: string): Promise<any> {
+    const user = await this.userRepository
       .createQueryBuilder('user')
       .select(['user.userId', 'user.name'])
       .where('user.userId = :id', { id: userId })
       .getOne();
-    if (result) {
-      return result;
+    if (user) {
+      const obj = {
+        userId: user.userId,
+        email: user.email,
+        name: user.name,
+      };
+      return obj;
     } else {
       throw new UnauthorizedException('존재하지않는 회원입니다.');
     }

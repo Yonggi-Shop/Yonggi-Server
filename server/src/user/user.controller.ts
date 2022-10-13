@@ -8,6 +8,7 @@ import {
   Req,
   UseInterceptors,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { LoginDto } from 'src/dto/Request/login.requset.dto';
 import { User } from './user.entity';
@@ -20,7 +21,7 @@ export class UserController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  getUser() {
-    return this.userService.allUser();
+  getUser(@Query('id') id: string) {
+    return this.userService.getUser(id);
   }
 }
