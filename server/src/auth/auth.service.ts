@@ -1,12 +1,13 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DatabaseModule } from 'src/db/database.module';
-import { LoginDto } from 'src/dto/login.dto';
-import { RegistDto } from 'src/dto/regist.dto';
+import { LoginDto } from 'src/dto/Request/login.requset.dto';
+import { RegistDto } from 'src/dto/Request/regist.requset.dto';
 import { User } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { LoginResponseDto } from 'src/dto/Response/login.response.dto';
 
 @Injectable()
 export class AuthService {
@@ -16,7 +17,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async login(user: LoginDto): Promise<any> {
+  async login(user: LoginDto): Promise<LoginResponseDto> {
     const { userId, password } = user;
     const getUser = await this.userRepository.findOne({ where: { userId } });
     if (!getUser) {
@@ -36,7 +37,9 @@ export class AuthService {
     const payload = { userId, sub: getUser.userId };
     const token = this.jwtService.sign(payload);
     const resultObj = {
-      user: getUser,
+      userId: getUser.userId,
+      name: getUser.name,
+      email: getUser.email,
       token: `Authentication=${token}; HttpOnly; Path=/; Max-Age=36000`,
     };
     return resultObj;

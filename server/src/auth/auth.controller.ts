@@ -16,8 +16,8 @@ import {
 } from '@nestjs/swagger';
 import { Response } from 'express';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
-import { LoginDto } from 'src/dto/login.dto';
-import { RegistDto } from 'src/dto/regist.dto';
+import { LoginDto } from 'src/dto/Request/login.requset.dto';
+import { RegistDto } from 'src/dto/Request/regist.requset.dto';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt/jwt.guard';
 
@@ -41,7 +41,7 @@ export class AuthController {
     const data = await this.authService.login(loginDto);
     response.setHeader('Set-Cookie', await data.token);
     console.log(data);
-    return data.user.name;
+    return data;
   }
 
   @Post('regist')
