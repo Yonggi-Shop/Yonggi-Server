@@ -13,6 +13,8 @@ import { User } from './user/user.entity';
 import { env } from 'process';
 import { HttpExceptionFilter } from './common/exceptions/http-exception.filter';
 import { APP_FILTER } from '@nestjs/core';
+import { ProductController } from './product/product.controller';
+import { ProductModule } from './product/product.module';
 
 @Module({
   providers: [
@@ -38,6 +40,7 @@ import { APP_FILTER } from '@nestjs/core';
     }),
     AuthModule,
     UserModule,
+    ProductModule,
   ],
 })
 export class AppModule implements NestModule {
