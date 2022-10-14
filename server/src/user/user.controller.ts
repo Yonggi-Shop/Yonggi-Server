@@ -1,10 +1,19 @@
 import { UserService } from './user.service';
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
-import { LoginDto } from 'src/dto/login.dto';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Res,
+  Req,
+  UseInterceptors,
+  UseGuards,
+  Query,
+} from '@nestjs/common';
+import { LoginDto } from 'src/dto/Request/login.requset.dto';
 import { User } from './user.entity';
 import { Request } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
-import { UserResponseDto } from 'src/dto/user.response.dto';
 
 @Controller('user')
 export class UserController {
@@ -12,7 +21,7 @@ export class UserController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  getUser(@Query('id') id: string): UserResponseDto {
+  getUser(@Query('id') id: string) {
     return this.userService.getUser(id);
   }
 }

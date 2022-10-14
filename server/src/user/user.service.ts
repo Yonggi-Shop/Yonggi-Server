@@ -1,7 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { LoginDto } from 'src/dto/login.dto';
-import { UserResponseDto } from 'src/dto/user.response.dto';
+import { LoginDto } from 'src/dto/Request/login.requset.dto';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
 
@@ -16,7 +15,7 @@ export class UserService {
     return await this.userRepository.find();
   }
 
-  async getUser(userId: string): Promise<UserResponseDto> {
+  async getUser(userId: string): Promise<any> {
     const user = await this.userRepository
       .createQueryBuilder('user')
       .select(['user.userId', 'user.name'])
@@ -28,7 +27,7 @@ export class UserService {
         email: user.email,
         name: user.name,
       };
-      return new UserResponseDto(obj);
+      return obj;
     } else {
       throw new UnauthorizedException('존재하지않는 회원입니다.');
     }
