@@ -19,6 +19,7 @@ import { NoticeController } from './notice/notice.controller';
 import { NoticeService } from './notice/notice.service';
 import { Notice } from './notice/notice.entity';
 import { Product } from './product/product.entity';
+import { NoticeModule } from './notice/notice.module';
 
 @Module({
   providers: [
@@ -26,7 +27,6 @@ import { Product } from './product/product.entity';
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
     },
-    NoticeService,
   ],
   imports: [
     ConfigModule.forRoot({
@@ -46,8 +46,8 @@ import { Product } from './product/product.entity';
     AuthModule,
     UserModule,
     ProductModule,
+    NoticeModule,
   ],
-  controllers: [NoticeController],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

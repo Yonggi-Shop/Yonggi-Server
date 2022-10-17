@@ -1,4 +1,15 @@
-import { Controller, Get } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
+import { CreateNoticeDto } from 'src/dto/Request/create.notice.dto';
+import { DeleteNoticeDto } from 'src/dto/Request/delete.notice.dto';
 import { NoticeService } from './notice.service';
 
 @Controller('notice')
@@ -7,6 +18,18 @@ export class NoticeController {
 
   @Get()
   getNotice() {
-    return this.noticeService.getNotice();
+    return this.noticeService.getNoticeHendler();
+  }
+
+  @Post()
+  @UseGuards(JwtAuthGuard)
+  createNotice(@Body() createDto: CreateNoticeDto) {
+    return this.noticeService.createNotice(createDto);
+  }
+
+  @Delete()
+  @UseGuards(JwtAuthGuard)
+  deleteNotice(@Query('id') id: DeleteNoticeDto) {
+    return this.noticeService.deleteNotice(id);
   }
 }
