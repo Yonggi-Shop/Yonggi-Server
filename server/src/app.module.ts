@@ -15,6 +15,10 @@ import { HttpExceptionFilter } from './common/exceptions/http-exception.filter';
 import { APP_FILTER } from '@nestjs/core';
 import { ProductController } from './product/product.controller';
 import { ProductModule } from './product/product.module';
+import { NoticeController } from './notice/notice.controller';
+import { NoticeService } from './notice/notice.service';
+import { Notice } from './notice/notice.entity';
+import { Product } from './product/product.entity';
 
 @Module({
   providers: [
@@ -22,6 +26,7 @@ import { ProductModule } from './product/product.module';
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
     },
+    NoticeService,
   ],
   imports: [
     ConfigModule.forRoot({
@@ -34,7 +39,7 @@ import { ProductModule } from './product/product.module';
       username: env.DATABASE_ID,
       password: env.DATABASE_PASSWORD,
       database: env.DATABASE_NAME,
-      entities: [User],
+      entities: [User, Notice, Product],
       synchronize: false,
       autoLoadEntities: true,
     }),
@@ -42,6 +47,7 @@ import { ProductModule } from './product/product.module';
     UserModule,
     ProductModule,
   ],
+  controllers: [NoticeController],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

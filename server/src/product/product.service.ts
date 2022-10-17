@@ -9,6 +9,8 @@ export class ProductService {
   async getProducts() {
     try {
       //상품리스트 가져오는 로직작성필요
+      const products = await this.productRepository.find();
+      return products;
     } catch (e) {
       console.log(e);
     }
