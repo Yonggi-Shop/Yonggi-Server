@@ -22,13 +22,14 @@ export class NoticeController {
   }
 
   @Post()
-  @UseGuards(JwtAuthGuard)
+  //배포할떄는 로그인넣어줘야함
+  // @UseGuards(JwtAuthGuard)
   createNotice(@Body() createDto: CreateNoticeDto) {
     return this.noticeService.createNotice(createDto);
   }
 
   @Delete()
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   deleteNotice(@Query('id') id: DeleteNoticeDto) {
     return this.noticeService.deleteNotice(id);
   }
