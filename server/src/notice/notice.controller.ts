@@ -18,7 +18,7 @@ export class NoticeController {
 
   @Get()
   getNotice() {
-    return this.noticeService.getNoticeHendler();
+    return this.noticeService.getNoticeHandler();
   }
 
   @Post()

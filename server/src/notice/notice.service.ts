@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateNoticeDto } from 'src/dto/Request/create.notice.dto';
 import { DeleteNoticeDto } from 'src/dto/Request/delete.notice.dto';
-import { Repository } from 'typeorm';
+import { Repository, SelectQueryBuilder } from 'typeorm';
 import { Notice } from './notice.entity';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class NoticeService {
     private readonly noticeRepository: Repository<Notice>,
   ) {}
 
-  async getNoticeHendler(): Promise<any> {
+  async getNoticeHandler(): Promise<any> {
     try {
       const noticeArr = await this.noticeRepository
         .createQueryBuilder('notice')
