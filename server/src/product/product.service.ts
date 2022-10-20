@@ -1,6 +1,6 @@
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { createProductDto } from 'src/dto/Request/create.product.dto';
+import { createProductDto } from 'src/dto/Request/product/create.product.dto';
 import { Repository } from 'typeorm';
 import { Product } from './product.entity';
 

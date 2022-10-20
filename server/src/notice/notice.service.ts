@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateNoticeDto } from 'src/dto/Request/create.notice.dto';
-import { DeleteNoticeDto } from 'src/dto/Request/delete.notice.dto';
+import { CreateNoticeDto } from 'src/dto/Request/notice/create.notice.dto';
+import { DeleteNoticeDto } from 'src/dto/Request/notice/delete.notice.dto';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { Notice } from './notice.entity';
 

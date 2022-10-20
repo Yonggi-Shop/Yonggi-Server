@@ -8,8 +8,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
-import { CreateNoticeDto } from 'src/dto/Request/create.notice.dto';
-import { DeleteNoticeDto } from 'src/dto/Request/delete.notice.dto';
+import { CreateNoticeDto } from 'src/dto/Request/notice/create.notice.dto';
+import { DeleteNoticeDto } from 'src/dto/Request/notice/delete.notice.dto';
 import { NoticeService } from './notice.service';
 
 @Controller('notice')
