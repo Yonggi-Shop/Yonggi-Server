@@ -1,5 +1,6 @@
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { createProductDto } from 'src/dto/Request/create.product.dto';
 import { Repository } from 'typeorm';
 import { Product } from './product.entity';
 
@@ -31,6 +32,14 @@ export class ProductService {
         throw new UnauthorizedException('존재하지 않는 상품입니다.');
       }
       return searchProducts;
+    } catch (e) {
+      throw new UnauthorizedException(e);
+    }
+  }
+
+  async createProductHandler(product: createProductDto): Promise<any> {
+    try {
+      return this.productRepository.save(product);
     } catch (e) {
       throw new UnauthorizedException(e);
     }

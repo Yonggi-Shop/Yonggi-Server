@@ -1,4 +1,6 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { createProductDto } from 'src/dto/Request/create.product.dto';
+import { Product } from './product.entity';
 import { ProductService } from './product.service';
 
 @Controller('product')
@@ -13,5 +15,10 @@ export class ProductController {
   @Get('/search')
   searchProducts(@Query('productName') productName: string) {
     return this.productService.searchProductsHandler(productName);
+  }
+
+  @Post()
+  createProduct(@Body() product: createProductDto) {
+    return this.productService.createProductHandler(product);
   }
 }
