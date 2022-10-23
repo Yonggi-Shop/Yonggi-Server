@@ -55,19 +55,23 @@ export class AuthService {
   }
 
   async regist(user: RegistDto): Promise<any> {
-    const { userId, password, email, name } = user;
-    const getUser = await this.userRepository.findOne({ where: { userId } });
-    if (getUser) {
-      throw new UnauthorizedException('이미 존재하는 아이디입니다.');
-    } else {
-      const hashedPassword = await bcrypt.hash(user.password, 12);
-      const registUser = await this.userRepository.save({
-        userId,
-        password: hashedPassword,
-        name,
-        email,
-      });
-      return registUser;
+    try {
+      const { userId, password, email, name } = user;
+      const getUser = await this.userRepository.findOne({ where: { userId } });
+      if (getUser) {
+        throw new UnauthorizedException('이미 존재하는 아이디입니다.');
+      } else {
+        const hashedPassword = await bcrypt.hash(user.password, 12);
+        const registUser = await this.userRepository.save({
+          userId,
+          password: hashedPassword,
+          name,
+          email,
+        });
+        return registUser;
+      }
+    } catch (e) {
+      throw new UnauthorizedException(e);
     }
   }
 }

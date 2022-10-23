@@ -1,6 +1,8 @@
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateNoticeProductDto } from 'src/dto/Request/product/create.notice.product.dto';
 import { createProductDto } from 'src/dto/Request/product/create.product.dto';
+import { GetProductResponseDto } from 'src/dto/Response/get.product.response.dto';
 import { Repository } from 'typeorm';
 import { Product } from './product.entity';
 
@@ -11,7 +13,7 @@ export class ProductService {
     private readonly productRepository: Repository<Product>,
   ) {}
 
-  async getProductsHandler(): Promise<Product[]> {
+  async getProductsHandler(): Promise<GetProductResponseDto[]> {
     try {
       const products = await this.productRepository.find();
       return products;
@@ -20,7 +22,7 @@ export class ProductService {
     }
   }
 
-  async searchProductsHandler(productName): Promise<Product[]> {
+  async searchProductsHandler(productName): Promise<GetProductResponseDto[]> {
     try {
       const searchProducts = await this.productRepository
         .createQueryBuilder('product')
@@ -39,7 +41,30 @@ export class ProductService {
 
   async createProductHandler(product: createProductDto): Promise<any> {
     try {
-      return this.productRepository.save(product);
+      const findProduct = this.productRepository.findOneBy({
+        productName: product.productName,
+      });
+      if (findProduct) {
+        throw new UnauthorizedException('이미 존재하는 상품명 입니다.');
+      } else return this.productRepository.save(product);
+    } catch (e) {
+      throw new UnauthorizedException(e);
+    }
+  }
+
+  //noticeProduct로 분리해야함 스키마 추가 필요
+  async createNoticeProductHandler(noticeProduct: CreateNoticeProductDto) {
+    try {
+      return this.productRepository.save(noticeProduct);
+    } catch (e) {
+      throw new UnauthorizedException(e);
+    }
+  }
+
+  //noticeProduct로 분리해야함
+  async getNoticeProductsHandler(): Promise<Product[]> {
+    try {
+      return this.productRepository.find();
     } catch (e) {
       throw new UnauthorizedException(e);
     }
