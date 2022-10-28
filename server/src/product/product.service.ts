@@ -13,9 +13,16 @@ export class ProductService {
     private readonly productRepository: Repository<Product>,
   ) {}
 
-  async getProductsHandler(): Promise<GetProductResponseDto[]> {
+  //type any부분 고쳐야함
+  async getProductsHandler(start: number, limit: number): Promise<any> {
     try {
-      const products = await this.productRepository.find();
+      const products = await this.productRepository
+        .createQueryBuilder('product')
+        .select()
+        .from(Product, 'product')
+        .limit(limit)
+        .offset(start)
+        .getManyAndCount();
       return products;
     } catch (e) {
       throw new UnauthorizedException('상품을 가져오는데 실패하였습니다.');

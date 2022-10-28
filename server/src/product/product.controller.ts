@@ -15,8 +15,9 @@ export class ProductController {
     summary: '상품 리스트 가져오기',
     description: '상품 리스트 가져오기',
   })
-  getProducts() {
-    return this.productService.getProductsHandler();
+  getProducts(@Query() paginationQuery) {
+    const { start, limit } = paginationQuery;
+    return this.productService.getProductsHandler(start, limit);
   }
 
   @Get('/search')

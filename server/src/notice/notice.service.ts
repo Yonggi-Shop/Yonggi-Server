@@ -19,7 +19,6 @@ export class NoticeService {
         .select('id,notice,createdAt')
         .orderBy('notice.createdAt', 'DESC')
         .getRawMany();
-      console.log(noticeArr);
       return noticeArr;
     } catch (e) {
       throw new UnauthorizedException('공지글을 가져오는데 실패하였습니다.');
