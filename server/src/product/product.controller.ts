@@ -1,5 +1,6 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Request } from 'express';
 import { CreateNoticeProductDto } from 'src/dto/Request/product/create.notice.product.dto';
 import { createProductDto } from 'src/dto/Request/product/create.product.dto';
 import { Product } from './product.entity';
@@ -18,6 +19,15 @@ export class ProductController {
   getProducts(@Query() paginationQuery) {
     const { start, limit } = paginationQuery;
     return this.productService.getProductsHandler(start, limit);
+  }
+
+  @Get(':id')
+  @ApiOperation({
+    summary: '상품 상세 가져오기',
+    description: '상품 상세 가져오기',
+  })
+  findOneProduct(@Param('id') id: number) {
+    return this.productService.findProductHandler(id);
   }
 
   @Get('/search')

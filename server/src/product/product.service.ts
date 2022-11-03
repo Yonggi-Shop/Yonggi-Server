@@ -18,11 +18,18 @@ export class ProductService {
     try {
       const products = await this.productRepository
         .createQueryBuilder('product')
-        .select()
-        .from(Product, 'product')
         .limit(limit)
         .offset(start)
         .getManyAndCount();
+      return products;
+    } catch (e) {
+      throw new UnauthorizedException('상품을 가져오는데 실패하였습니다.');
+    }
+  }
+
+  async findProductHandler(id: number): Promise<Product> {
+    try {
+      const products = await this.productRepository.findOneBy({ id });
       return products;
     } catch (e) {
       throw new UnauthorizedException('상품을 가져오는데 실패하였습니다.');
