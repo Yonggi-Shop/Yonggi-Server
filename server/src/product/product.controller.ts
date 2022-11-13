@@ -3,6 +3,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import { CreateNoticeProductDto } from 'src/dto/Request/product/create.notice.product.dto';
 import { createProductDto } from 'src/dto/Request/product/create.product.dto';
+import { SearchProductDto } from 'src/dto/Request/product/search.product.dto';
 import { Product } from './product.entity';
 import { ProductService } from './product.service';
 
@@ -30,10 +31,10 @@ export class ProductController {
     return this.productService.findProductHandler(id);
   }
 
-  @Get('/search')
+  @Post('/search')
   @ApiOperation({ summary: '상품 검색', description: '상품 검색' })
-  searchProducts(@Query('productName') productName: string) {
-    return this.productService.searchProductsHandler(productName);
+  searchProducts(@Body() productInfo: SearchProductDto) {
+    return this.productService.searchProductsHandler(productInfo);
   }
 
   @Post()

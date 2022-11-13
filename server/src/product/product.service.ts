@@ -1,8 +1,15 @@
-import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  Logger,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateNoticeProductDto } from 'src/dto/Request/product/create.notice.product.dto';
 import { createProductDto } from 'src/dto/Request/product/create.product.dto';
+import { SearchProductDto } from 'src/dto/Request/product/search.product.dto';
 import { GetProductResponseDto } from 'src/dto/Response/get.product.response.dto';
+import { User } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
 import { Product } from './product.entity';
 
@@ -11,10 +18,14 @@ export class ProductService {
   constructor(
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
   ) {}
 
-  //type any부분 고쳐야함
-  async getProductsHandler(start: number, limit: number): Promise<any> {
+  async getProductsHandler(
+    start: number,
+    limit: number,
+  ): Promise<[Product[], number]> {
     try {
       const products = await this.productRepository
         .createQueryBuilder('product')
@@ -30,22 +41,46 @@ export class ProductService {
   async findProductHandler(id: number): Promise<Product> {
     try {
       const products = await this.productRepository.findOneBy({ id });
+      if (!products) {
+        new UnauthorizedException('존재하지 않는 상품입니다.');
+      }
       return products;
     } catch (e) {
       throw new UnauthorizedException('상품을 가져오는데 실패하였습니다.');
     }
   }
 
-  async searchProductsHandler(productName): Promise<GetProductResponseDto[]> {
+  async searchProductsHandler(
+    productInfo: SearchProductDto,
+  ): Promise<GetProductResponseDto[]> {
     try {
+      const { productName, userId } = productInfo;
       const searchProducts = await this.productRepository
-        .createQueryBuilder('product')
-        .where('product.productName like :productName', {
-          productName: `${productName}`,
+        .createQueryBuilder()
+        .where('productName like :productName', {
+          productName: `%${productName}%`,
         })
         .getMany();
       if (!searchProducts) {
         throw new UnauthorizedException('존재하지 않는 상품입니다.');
+      }
+      if (userId) {
+        const searchRecent = await this.userRepository
+          .createQueryBuilder()
+          .select(['recentSearch'])
+          .where('userId = :userId', { userId })
+          .execute();
+        const { recentSearch } = searchRecent[0];
+        const addRecentArr = recentSearch.concat(productName);
+        if (addRecentArr.length > 10) {
+          addRecentArr.pop();
+        }
+        await this.userRepository
+          .createQueryBuilder()
+          .update(User)
+          .set({ recentSearch: addRecentArr })
+          .where('userId = :userId', { userId })
+          .execute();
       }
       return searchProducts;
     } catch (e) {
@@ -66,7 +101,6 @@ export class ProductService {
     }
   }
 
-  //noticeProduct로 분리해야함 스키마 추가 필요
   async createNoticeProductHandler(noticeProduct: CreateNoticeProductDto) {
     try {
       return this.productRepository.save(noticeProduct);
@@ -75,7 +109,6 @@ export class ProductService {
     }
   }
 
-  //noticeProduct로 분리해야함
   async getNoticeProductsHandler(): Promise<Product[]> {
     try {
       return this.productRepository.find();

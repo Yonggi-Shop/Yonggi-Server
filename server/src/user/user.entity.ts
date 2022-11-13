@@ -27,4 +27,7 @@ export class User {
 
   @Column({ nullable: true })
   authStrategy: string;
+
+  @Column('json')
+  recentSearch: string;
 }
