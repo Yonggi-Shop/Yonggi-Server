@@ -13,8 +13,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private readonly authService: AuthService) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
-        (req:Request) =>{
-            return req?.cookies?.Authentication;
+        (req: Request) => {
+          return req?.cookies?.Authentication;
         },
       ]),
       secretOrKey: env.JWT_SECRET,

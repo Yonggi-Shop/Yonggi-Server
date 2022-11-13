@@ -6,14 +6,17 @@ import {
   Post,
   Query,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
+import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 import { CreateNoticeDto } from 'src/dto/Request/notice/create.notice.dto';
 import { DeleteNoticeDto } from 'src/dto/Request/notice/delete.notice.dto';
 import { NoticeService } from './notice.service';
 @ApiTags('Notice')
 @Controller('notice')
+@UseInterceptors(SuccessInterceptor)
 export class NoticeController {
   constructor(private readonly noticeService: NoticeService) {}
 

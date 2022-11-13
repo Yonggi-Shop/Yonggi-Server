@@ -15,7 +15,7 @@ export class UserService {
     return await this.userRepository.find();
   }
 
-  async getUser(userId: string): Promise<any> {
+  async findUserHandler(userId: string): Promise<any> {
     const user = await this.userRepository
       .createQueryBuilder('user')
       .select(['user.userId', 'user.name'])
@@ -30,6 +30,16 @@ export class UserService {
       return obj;
     } else {
       throw new UnauthorizedException('존재하지않는 회원입니다.');
+    }
+  }
+
+  async getRecentSearchHandler(userId: string): Promise<any> {
+    try {
+      const recents = await this.userRepository.findOneBy({ userId });
+      const { recentSearch } = recents;
+      return recentSearch;
+    } catch (e) {
+      throw new UnauthorizedException('최근 검색어를 가져올 수 없습니다.');
     }
   }
 }

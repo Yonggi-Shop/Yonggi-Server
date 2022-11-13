@@ -12,6 +12,7 @@ export class SuccessInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       map((data) => ({
+        code: 200,
         success: true,
         data,
       })),

@@ -15,9 +15,11 @@ import { User } from './user.entity';
 import { Request } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 
 @ApiTags('User')
 @Controller('user')
+@UseInterceptors(SuccessInterceptor)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -26,8 +28,16 @@ export class UserController {
     summary: '유저 정보 가져오기',
     description: '유저 정보 가져오기',
   })
+  @Get()
   @UseGuards(JwtAuthGuard)
   getUser(@Query('id') id: string) {
-    return this.userService.getUser(id);
+    return this.userService.findUserHandler(id);
+  }
+
+  @Get('/recent')
+  @UseGuards(JwtAuthGuard)
+  getRecentSearch(@Req() req: Request) {
+    const { userId } = req.body;
+    return this.userService.getRecentSearchHandler(userId);
   }
 }

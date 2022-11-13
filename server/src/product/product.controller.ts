@@ -1,6 +1,16 @@
-import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  Req,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
+import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 import { CreateNoticeProductDto } from 'src/dto/Request/product/create.notice.product.dto';
 import { createProductDto } from 'src/dto/Request/product/create.product.dto';
 import { SearchProductDto } from 'src/dto/Request/product/search.product.dto';
@@ -9,6 +19,7 @@ import { ProductService } from './product.service';
 
 @ApiTags('Product')
 @Controller('product')
+@UseInterceptors(SuccessInterceptor)
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
