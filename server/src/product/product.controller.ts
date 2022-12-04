@@ -13,7 +13,10 @@ import { Request } from 'express';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 import { CreateNoticeProductDto } from 'src/dto/Request/product/create.notice.product.dto';
 import { createProductDto } from 'src/dto/Request/product/create.product.dto';
-import { SearchProductDto } from 'src/dto/Request/product/search.product.dto';
+import {
+  SearchProductDto,
+  SearchProductNameDto,
+} from 'src/dto/Request/product/search.product.dto';
 import { Product } from './product.entity';
 import { ProductService } from './product.service';
 
@@ -46,6 +49,12 @@ export class ProductController {
   @ApiOperation({ summary: '상품 검색', description: '상품 검색' })
   searchProducts(@Body() productInfo: SearchProductDto) {
     return this.productService.searchProductsHandler(productInfo);
+  }
+
+  @Get('/search-name/:productName')
+  @ApiOperation({ summary: '상품이름 검색', description: '상품이름 검색' })
+  searchProductName(@Param('productName') productName: string) {
+    return this.productService.searchProductNameHandler(productName);
   }
 
   @Post()

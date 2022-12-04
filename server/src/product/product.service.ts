@@ -7,7 +7,10 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateNoticeProductDto } from 'src/dto/Request/product/create.notice.product.dto';
 import { createProductDto } from 'src/dto/Request/product/create.product.dto';
-import { SearchProductDto } from 'src/dto/Request/product/search.product.dto';
+import {
+  SearchProductDto,
+  SearchProductNameDto,
+} from 'src/dto/Request/product/search.product.dto';
 import { GetProductResponseDto } from 'src/dto/Response/get.product.response.dto';
 import { User } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
@@ -83,6 +86,23 @@ export class ProductService {
           .execute();
       }
       return searchProducts;
+    } catch (e) {
+      throw new UnauthorizedException(e);
+    }
+  }
+
+  async searchProductNameHandler(productName: string): Promise<string[]> {
+    try {
+      const names = await this.productRepository
+        .createQueryBuilder()
+        .where('productName like :productName', {
+          productName: `%${productName}%`,
+        })
+        .orderBy('productName', 'ASC')
+        .getMany();
+      let resultNames: Product[] | string | string[] = names;
+      resultNames = resultNames.map((v) => v.productName);
+      return resultNames;
     } catch (e) {
       throw new UnauthorizedException(e);
     }

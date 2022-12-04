@@ -13,3 +13,9 @@ export class SearchProductDto {
   @IsString()
   userId?: string;
 }
+
+export class SearchProductNameDto {
+  @ApiProperty({ description: '상품명' })
+  @IsString()
+  productName: string;
+}
